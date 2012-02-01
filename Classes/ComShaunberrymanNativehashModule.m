@@ -79,4 +79,69 @@
     return result;
 }
 
+-(NSArray*)hashContacts:(id)args {
+    CFArrayRef ABAddressBookCopyArrayOfAllPeople (ABAddressBookRef addressBook);
+    ABAddressBookRef addressBook = ABAddressBookCreate();
+    CFArrayRef allPeople = ABAddressBookCopyArrayOfAllPeople(addressBook);
+    CFIndex nPeople = ABAddressBookGetPersonCount(addressBook);
+    
+    // array of hashes
+    NSMutableArray *contactHashes = [[NSMutableArray alloc] initWithCapacity:3000];
+    int contactIndex = 0;
+    
+    // go through ALL the people in the address book
+    for( int i = 0 ; i < nPeople ; i++ )
+    {
+        ABRecordRef person = (ABRecordRef*)CFArrayGetValueAtIndex(allPeople, i );
+        ABMultiValueRef phoneNumbers = (ABMultiValueRef)ABRecordCopyValue(person, kABPersonPhoneProperty);
+        for(int p = 0; p < ABMultiValueGetCount(phoneNumbers); p++)
+        {   
+            NSData* inputData = [[self cleanPhoneNumberString:(NSString*)ABMultiValueCopyValueAtIndex(phoneNumbers, p)] dataUsingEncoding:NSUTF8StringEncoding];
+            NSString* valueHashed = [[HashValue sha256HashWithData:inputData] description];
+            
+            // add to the array
+            [contactHashes addObject: valueHashed];
+            
+            // bump the index
+            contactIndex++;
+        }
+        CFRelease(phoneNumbers);
+        
+        // get the email addresses
+        ABMultiValueRef emailAddresses = (ABMultiValueRef)ABRecordCopyValue(person, kABPersonEmailProperty);
+        for(int p = 0; p < ABMultiValueGetCount(emailAddresses); p++)
+        {   
+            NSData* inputData = [(NSString*)ABMultiValueCopyValueAtIndex(emailAddresses, p) dataUsingEncoding:NSUTF8StringEncoding];
+            NSString* valueHashed = [[HashValue sha256HashWithData:inputData] description];
+            
+            // add to the array
+            [contactHashes addObject: valueHashed];
+            
+            // bump the index
+            contactIndex++;
+        }
+        CFRelease(emailAddresses);
+    }
+    
+    // relase our references
+    CFRelease(addressBook);
+    CFRelease(allPeople);
+    
+    // return our array!
+    return [NSArray arrayWithArray:contactHashes];
+}
+
+-(NSString*) cleanPhoneNumberString:(NSString*) input
+{
+    NSString *output = @"";
+    for (int i=0; i<[input length]; i++) {
+        if (isdigit([input characterAtIndex:i])) {
+            output=   [output  stringByAppendingFormat:@"%c",[input characterAtIndex:i]];
+        }
+    }
+    
+    return  output;
+}
+
+
 @end

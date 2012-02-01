@@ -6,9 +6,11 @@
  */
 #import "TiModule.h"
 #import "HashValue.h"
+#import <AddressBook/AddressBook.h>
 
 @interface ComShaunberrymanNativehashModule : TiModule 
 {
 }
 
+-(NSString*) cleanPhoneNumberString:(NSString*) input;
 @end

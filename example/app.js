@@ -29,4 +29,10 @@ if (result === input_expecting) {
   Ti.API.info('ERROR, hash does not match!');
 }
 
+// get all the contacts and hash the phone numbers and email addresses
+var results = nativehash.hashContacts();
+for (var i=0; i < results.length; i++) {
+  Ti.API.info('Object: ' + results[i]);
+};
+
 window.open();
