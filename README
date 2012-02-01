@@ -7,9 +7,8 @@ Speed
 -------------------------------------------
 Using native sha256 hashing is about 9.71 times faster than a javascript implementation.
 
-
 Usage
 -------------------------------------------
-var titanium_nativehash = require('com.titanium_nativehash');
-var result = titanium_nativehash.sha256('titanium_nativehash');
-Ti.API.info('Input: titanium_nativehash - Sha256: ' + result);
+var nativehash = require('com.shaunberryman.nativehash');
+var result = nativehash.sha256('this is a test!');
+Ti.API.info('Input: this is a test! - Sha256: ' + result);
