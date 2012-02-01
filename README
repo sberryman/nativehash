@@ -1,0 +1,15 @@
+Appcelerator Titanium Native Hash Module
+===========================================
+
+A really simple wrapper around CommonCrypto/CommonDigest.h implemented as an Appcelerator Titanium Module. This will simple wrap MD5 and SHA256 hash methods.
+
+Speed
+-------------------------------------------
+Using native sha256 hashing is about 9.71 times faster than a javascript implementation.
+
+
+Usage
+-------------------------------------------
+var titanium_nativehash = require('com.titanium_nativehash');
+var result = titanium_nativehash.sha256('titanium_nativehash');
+Ti.API.info('Input: titanium_nativehash - Sha256: ' + result);

@@ -1,0 +1,18 @@
+#
+# this is your module manifest and used by Titanium
+# during compilation, packaging, distribution, etc.
+#
+version: 0.1
+apiversion: 2
+description: Native titanium wrapper around CommonCrypto/CommonDigest.h
+author: Shaun Berryman
+license: Apache Public License
+copyright: Copyright (c) 2012 by Shaun Berryman
+
+
+# these should not be edited
+name: nativehash
+moduleid: com.shaunberryman.nativehash
+guid: d48d84f2-c056-42af-856e-7366daafb3e8
+platform: iphone
+minsdk: 1.8.0.1
